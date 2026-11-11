@@ -128,24 +128,23 @@
   .filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .filters button span { font-family: var(--mono); font-size: 12px; opacity: .6; margin-left: 4px; }
 
+  /* proyectos: lista a la izquierda, escenario fijo a la derecha que cambia con una cortina */
+  .showcase { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 56px; align-items: start; }
   .list { border-top: 1px solid var(--line); }
   .row {
-    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 15em) 44px; align-items: center; gap: 24px;
-    padding: 30px 0; border-bottom: 1px solid var(--line); cursor: pointer;
-    transition: opacity .35s var(--ease), transform .35s var(--ease);
+    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 10px 20px;
+    padding: 26px 0; border-bottom: 1px solid var(--line); cursor: pointer;
+    transition: opacity .45s var(--ease);
   }
   .row > * { min-width: 0; }
-  .row::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 0; background: var(--surface); z-index: -1; transition: width .5s var(--ease); }
-  .list { position: relative; z-index: 0; }
-  .row:hover::before, .row:focus-within::before { width: 100%; }
-  .row h3 { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(30px, 5vw, 60px); line-height: 1; letter-spacing: -.035em; transition: transform .45s var(--ease), color .3s; }
-  .row:hover h3 { transform: translateX(14px); color: var(--accent); }
-  .row p { margin: 8px 0 0; color: var(--muted); max-width: 40em; transition: transform .45s var(--ease); }
-  .row:hover p { transform: translateX(14px); }
-  .row .tags { font-family: var(--mono); font-size: 13px; color: var(--muted); display: grid; gap: 2px; }
+  .list.has-active .row:not(.active) { opacity: .38; }
+  .row h3 { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(30px, 3.8vw, 52px); line-height: 1; letter-spacing: -.035em; transition: color .35s; }
+  .row.active h3 { color: var(--accent); }
+  .row p { margin: 8px 0 0; color: var(--muted); max-width: 34em; }
+  .row .tags { grid-column: 1; font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 14px; }
   .row .tags b { color: var(--ink); font-weight: 500; }
-  .row .go { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; transition: background .3s, color .3s, transform .45s var(--ease), border-color .3s; }
-  .row:hover .go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); transform: rotate(-45deg); }
+  .row .go { grid-column: 2; grid-row: 1; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; transition: background .3s, color .3s, transform .45s var(--ease), border-color .3s; }
+  .row.active .go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); transform: rotate(-45deg); }
   .row .thumb { display: none; }
   .row.is-hidden { display: none; }
   .row .go.soon { visibility: hidden; }
@@ -153,16 +152,20 @@
   .row a.cover { position: absolute; inset: 0; z-index: 1; }
   .row a.cover:focus-visible { outline-offset: -3px; }
 
-  /* vista previa flotante */
-  .preview {
-    position: fixed; left: 0; top: 0; z-index: 15; width: 380px; aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden;
-    pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(.6); transition: opacity .3s var(--ease), scale .3s var(--ease);
-    box-shadow: 0 30px 80px -20px rgba(10, 12, 30, .45); background: var(--surface);
-  }
-  .preview.show { opacity: 1; }
-  .preview > div { position: absolute; inset: 0; opacity: 0; transition: opacity .35s; }
-  .preview > div.on { opacity: 1; }
-  .preview img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .stage-wrap { position: sticky; top: 96px; }
+  .stage { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 22px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
+  .stage .layer { position: absolute; inset: 0; clip-path: inset(100% 0 0 0); z-index: 1; }
+  .stage .layer.on { clip-path: inset(0 0 0 0); z-index: 2; transition: clip-path .85s var(--ease); }
+  .stage .layer.was { clip-path: inset(0 0 0 0); z-index: 1; }
+  .stage .layer img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transform: scale(1.14); transition: transform 1.3s var(--ease); }
+  .stage .layer.on img { transform: none; }
+  .stage .layer .mock { transform: scale(1.1); transition: transform 1.3s var(--ease); }
+  .stage .layer.on .mock { transform: none; }
+  .stage .layer.word { display: grid; place-items: center; background: var(--ink); color: var(--bg); }
+  .stage .layer.word span { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 5vw, 76px); letter-spacing: -.045em; }
+  .stage-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 16px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .stage-cap b { color: var(--ink); font-weight: 500; }
+  .stage-cap .count { font-variant-numeric: tabular-nums; }
 
   /* maqueta A la par */
   .mock { width: 100%; height: 100%; display: grid; place-items: center; background: var(--accent); }
@@ -178,6 +181,7 @@
   .about-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 72px; align-items: start; }
   .about-grid > * { min-width: 0; }
   .big-quote { margin: 18px 0 0; font-family: var(--display); font-weight: 600; font-size: clamp(28px, 3.6vw, 46px); line-height: 1.12; letter-spacing: -.03em; text-wrap: balance; }
+  .about-text .big-quote { color: var(--ink); margin-top: 18px; max-width: 18em; }
   .big-quote em { font-style: normal; color: var(--accent); }
   .about-text p { color: var(--muted); margin: 22px 0 0; max-width: 36em; }
   .numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
@@ -189,6 +193,7 @@
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip { padding: 8px 15px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); font-size: 15px; transition: transform .3s var(--ease), border-color .3s, color .3s; }
   .chip:hover { transform: translateY(-3px); border-color: var(--accent); color: var(--accent); }
+  .learning .chip { border-style: dashed; border-color: var(--accent); color: var(--accent); background: transparent; }
   .skills .also { color: var(--muted); font-size: 15px; margin: 0; }
 
   /* contacto */
@@ -221,17 +226,19 @@
 
   @media (max-width: 900px) {
     .about-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
-    .row { grid-template-columns: minmax(0, 1fr) 44px; }
-    .row .tags { grid-column: 1; grid-row: 2; }
-    .row .go { grid-column: 2; grid-row: 1; }
   }
-  @media (hover: none), (pointer: coarse) {
+  @media (max-width: 999px) {
+    .showcase { grid-template-columns: minmax(0, 1fr); }
+    .stage-wrap { display: none; }
+    .list.has-active .row:not(.active) { opacity: 1; }
     .row .thumb { display: block; grid-column: 1 / -1; grid-row: 1; aspect-ratio: 16 / 10; max-width: 100%; border-radius: 14px; overflow: hidden; background: var(--surface); }
     .row .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
     .row .main { grid-row: 2; }
     .row .tags { grid-row: 3; }
     .row .go { grid-row: 2; }
-    .preview, .cursor { display: none; }
+  }
+  @media (hover: none), (pointer: coarse) {
+    .cursor { display: none; }
   }
   @media (max-width: 560px) {
     body { font-size: 16px; }
@@ -309,6 +316,7 @@
         </div>
       </div>
 
+      <div class="showcase">
       <div class="list" id="list">
         <article class="row reveal" data-group="kovelt" data-preview="p-kovelt">
           <div class="thumb"><img src="img/kovelt.jpg" alt="" loading="lazy" width="1200" height="750"></div>
@@ -341,29 +349,35 @@
           <a class="cover" href="https://ceramica-z-a.vercel.app/" target="_blank" rel="noopener" aria-label="Abrir Cerámica Z&amp;A"></a>
         </article>
 
-        <article class="row reveal" data-group="propio">
+        <article class="row reveal" data-group="propio" data-preview="p-ecom">
           <div class="main"><h3>E-commerce</h3><p>Tienda online hecha en equipo, con registro e inicio de sesión, base de datos, gestión de productos y carrito.</p></div>
           <div class="tags"><b>Trabajo en equipo</b><span>Auth · Base de datos · Carrito</span></div>
           <span class="go soon" aria-hidden="true"></span>
         </article>
       </div>
+
+      <div class="stage-wrap" aria-hidden="true">
+        <div class="stage" id="stage">
+          <div class="layer on" id="p-kovelt"><img src="img/kovelt.jpg" alt=""></div>
+          <div class="layer" id="p-alapar"><div class="mock"><div class="mock-card"><div class="mock-top"><span>Plan de noviembre</span><span>2 personas</span></div><div class="mock-total">$ 842.300</div><div class="mock-bar"><b></b></div><div class="mock-row"><span>Supermercado</span><span>$ 64.200</span></div><div class="mock-row"><span>Alquiler</span><span>$ 380.000</span></div></div></div></div>
+          <div class="layer" id="p-lineab"><img src="img/lineab.jpg" alt=""></div>
+          <div class="layer" id="p-ceramica"><img src="img/ceramica.jpg" alt=""></div>
+          <div class="layer word" id="p-ecom"><span>E-commerce</span></div>
+        </div>
+        <div class="stage-cap"><b id="stage-name">KOVELT</b><span class="count" id="stage-count">1 de 5</span></div>
+      </div>
+      </div>
     </div>
   </section>
-
-  <div class="preview" id="preview" aria-hidden="true">
-    <div id="p-kovelt"><img src="img/kovelt.jpg" alt=""></div>
-    <div id="p-alapar"><div class="mock"><div class="mock-card"><div class="mock-top"><span>Plan de noviembre</span><span>2 personas</span></div><div class="mock-total">$ 842.300</div><div class="mock-bar"><b></b></div><div class="mock-row"><span>Supermercado</span><span>$ 64.200</span></div><div class="mock-row"><span>Alquiler</span><span>$ 380.000</span></div></div></div></div>
-    <div id="p-lineab"><img src="img/lineab.jpg" alt=""></div>
-    <div id="p-ceramica"><img src="img/ceramica.jpg" alt=""></div>
-  </div>
 
   <section class="about" id="sobre-mi">
     <div class="wrap about-grid">
       <div class="about-text reveal">
         <div class="eyebrow">Sobre mí</div>
-        <p class="big-quote">Me gusta tomar una idea y llevarla hasta algo <em>que funcione de verdad</em>.</p>
-        <p>Soy desarrollador de software y cofundador de KOVELT, donde creamos herramientas digitales para negocios reales. En paralelo desarrollo A la par, una app de finanzas compartidas hecha con Next.js y Supabase.</p>
-        <p>Hoy me estoy enfocando en arquitectura de software y en seguir creciendo en desarrollo web.</p>
+        <p class="big-quote">Programar es lo que más me apasiona. Cada proyecto es <em>una excusa para aprender algo nuevo</em>.</p>
+        <p>Desde que empecé a programar no paré. Me encanta entender cómo funcionan las cosas por dentro y construir las mías, y puedo pasar horas resolviendo un problema hasta que queda bien.</p>
+        <p>Esa pasión es la que me llevó a cofundar KOVELT, donde creamos herramientas para negocios reales, y a desarrollar proyectos propios como A la par.</p>
+        <p>Tengo muchas ganas de seguir creciendo como desarrollador. Quiero sumar experiencia, trabajar con equipos de los que pueda aprender y enfrentar desafíos cada vez más grandes.</p>
         <div class="numbers">
           <div><strong data-count="3">3</strong><span>sitios publicados con KOVELT</span></div>
           <div><strong data-count="7">7</strong><span>lenguajes que uso</span></div>
@@ -374,6 +388,7 @@
         <div><h4>Lenguajes</h4><div class="chips"><span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">Java</span><span class="chip">Python</span><span class="chip">SQL</span></div></div>
         <div><h4>Frameworks y datos</h4><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">Supabase</span><span class="chip">JSON</span><span class="chip">Excel</span></div></div>
         <div><h4>Herramientas</h4><div class="chips"><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Vercel</span></div></div>
+        <div class="learning"><h4>Aprendiendo ahora</h4><div class="chips"><span class="chip">Arquitectura de software</span><span class="chip">Testing</span><span class="chip">Diseño de bases de datos</span></div></div>
         <p class="also">También programo con Arduino y ESP32.</p>
       </div>
     </div>
@@ -496,29 +511,52 @@
     });
   });
 
-  /* ---------- vista previa que sigue al cursor ---------- */
-  var pv = document.getElementById("preview");
-  if (finePointer) {
-    var px = 0, py = 0, cx = 0, cy = 0, tilt = 0, run = false;
-    function loop() {
-      var nx = cx + (px - cx) * 0.14, ny = cy + (py - cy) * 0.14;
-      tilt += (((px - cx) * 0.06) - tilt) * 0.2; tilt = Math.max(-12, Math.min(12, tilt));
-      cx = nx; cy = ny;
-      pv.style.transform = "translate(" + cx + "px," + cy + "px) translate(-50%,-50%) rotate(" + tilt.toFixed(2) + "deg) scale(" + (pv.classList.contains("show") ? 1 : .6) + ")";
-      if (run) requestAnimationFrame(loop);
-    }
-    rows.forEach(function (r) {
-      var id = r.dataset.preview;
-      r.addEventListener("pointerenter", function (e) {
-        if (!id) return;
-        if (!run) { cx = px = e.clientX + 220; cy = py = e.clientY; run = true; requestAnimationFrame(loop); }
-        pv.querySelectorAll(":scope > div").forEach(function (d) { d.classList.toggle("on", d.id === id); });
-        pv.classList.add("show");
-      });
-      r.addEventListener("pointermove", function (e) { px = e.clientX + 220; py = e.clientY; });
-      r.addEventListener("pointerleave", function () { pv.classList.remove("show"); setTimeout(function () { if (!pv.classList.contains("show")) run = false; }, 400); });
-    });
+  /* ---------- escenario de proyectos: cortina al cambiar ---------- */
+  var list = document.getElementById("list");
+  var stage = document.getElementById("stage");
+  var stageName = document.getElementById("stage-name");
+  var stageCount = document.getElementById("stage-count");
+  var wide = window.matchMedia("(min-width: 1000px)");
+  var activeRow = null, overList = false, clearWas = null;
+  function visibleRows() { return Array.prototype.filter.call(rows, function (r) { return !r.classList.contains("is-hidden"); }); }
+  function activate(row) {
+    if (!row || row === activeRow) return;
+    if (activeRow) activeRow.classList.remove("active");
+    activeRow = row; row.classList.add("active");
+    var vis = visibleRows();
+    stageName.textContent = row.querySelector("h3").textContent;
+    stageCount.textContent = (vis.indexOf(row) + 1) + " de " + vis.length;
+    var next = document.getElementById(row.dataset.preview);
+    var prev = stage.querySelector(".layer.on");
+    if (!next || next === prev) return;
+    stage.querySelectorAll(".layer.was").forEach(function (l) { l.classList.remove("was"); });
+    if (prev) { prev.classList.remove("on"); prev.classList.add("was"); }
+    void next.offsetWidth;
+    next.classList.add("on");
+    clearTimeout(clearWas);
+    clearWas = setTimeout(function () { stage.querySelectorAll(".layer.was").forEach(function (l) { l.classList.remove("was"); }); }, 900);
   }
+  rows.forEach(function (r) {
+    r.addEventListener("pointerenter", function () { activate(r); });
+    r.addEventListener("focusin", function () { activate(r); });
+  });
+  list.addEventListener("pointerenter", function () { if (wide.matches) { overList = true; list.classList.add("has-active"); } });
+  list.addEventListener("pointerleave", function () { overList = false; list.classList.remove("has-active"); });
+  function byScroll() {
+    if (!wide.matches || overList) return;
+    var mid = innerHeight * 0.45, best = null, bestD = Infinity;
+    visibleRows().forEach(function (r) {
+      var b = r.getBoundingClientRect(), d = Math.abs(b.top + b.height / 2 - mid);
+      if (d < bestD) { bestD = d; best = r; }
+    });
+    var lb = list.getBoundingClientRect();
+    if (best && lb.top < innerHeight && lb.bottom > 0) activate(best);
+  }
+  addEventListener("scroll", byScroll, { passive: true });
+  activate(rows[0]);
+  document.querySelectorAll(".filters button").forEach(function (b) {
+    b.addEventListener("click", function () { var v = visibleRows(); activeRow = null; rows.forEach(function (r) { r.classList.remove("active"); }); activate(v[0]); });
+  });
 
   /* ---------- botones magnéticos y cursor ---------- */
   if (finePointer && !reduce) {
