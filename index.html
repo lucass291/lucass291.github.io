@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucas Vacca · Desarrollador de software</title>
+<meta name="description" content="Portfolio de Lucas Vacca, desarrollador de software y cofundador de KOVELT.">
+<meta property="og:title" content="Lucas Vacca · Desarrollador de software">
+<meta property="og:description" content="Desarrollador de software y cofundador de KOVELT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f14;
+    --bg-2: #10161e;
+    --card: #121922;
+    --line: rgba(255,255,255,0.08);
+    --text: #e6edf3;
+    --muted: #94a3b3;
+    --dim: #64717f;
+    --accent: #2dd4bf;
+    --accent-soft: rgba(45,212,191,0.12);
+    --radius: 14px;
+    --max: 1120px;
+    --mono: "JetBrains Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif; font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+  /* nav */
+  header.nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,15,20,0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-family: var(--mono); font-size: 15px; color: var(--text); }
+  .logo span { color: var(--accent); }
+  nav.links { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
+  nav.links a:hover { color: var(--text); }
+
+  /* hero */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 90% at 75% 40%, black 20%, transparent 75%);
+            mask-image: radial-gradient(ellipse 80% 90% at 75% 40%, black 20%, transparent 75%);
+  }
+  .hero::after {
+    content: ""; position: absolute; width: 760px; height: 760px; right: -220px; top: -260px;
+    background: radial-gradient(circle, rgba(45,212,191,0.13), transparent 62%);
+  }
+  .hero .wrap { position: relative; z-index: 1; padding-top: 128px; padding-bottom: 120px; }
+  .tag { font-family: var(--mono); font-size: 14px; color: var(--accent); letter-spacing: 0.5px; }
+  .hero h1 { margin: 14px 0 0; font-size: clamp(48px, 8vw, 92px); line-height: 1; letter-spacing: -0.035em; font-weight: 600; }
+  .hero .role { margin: 22px 0 0; font-size: clamp(20px, 2.4vw, 26px); color: var(--muted); font-weight: 300; }
+  .hero .role b { color: var(--text); font-weight: 600; }
+  .hero p.intro { max-width: 600px; margin: 22px 0 0; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 38px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 20px;
+    border-radius: 10px; font-size: 15px; font-weight: 500; border: 1px solid var(--line);
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .btn.primary { background: var(--accent); color: #06231f; border-color: var(--accent); }
+  .btn.primary:hover { background: #5eead4; }
+  .btn.ghost:hover { border-color: rgba(255,255,255,0.25); }
+  .btn svg { width: 17px; height: 17px; }
+
+  /* sections */
+  section { padding: 104px 0; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 44px; flex-wrap: wrap; }
+  h2 { margin: 6px 0 0; font-size: clamp(30px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.15; font-weight: 600; }
+  .section-head p { margin: 0; max-width: 420px; color: var(--muted); font-size: 16px; }
+
+  /* projects */
+  .projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .project {
+    display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden; transition: border-color .2s, transform .2s;
+  }
+  .project:hover { border-color: rgba(45,212,191,0.35); transform: translateY(-2px); }
+  .project.wide { grid-column: span 2; flex-direction: row; }
+  .shot { position: relative; aspect-ratio: 16 / 10; background: var(--bg-2); border-bottom: 1px solid var(--line); overflow: hidden; }
+  .project.wide .shot { flex: 1.25; border-bottom: 0; border-right: 1px solid var(--line); aspect-ratio: auto; min-height: 340px; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .5s; }
+  .project:hover .shot img { transform: scale(1.025); }
+  .body { flex: 1; padding: 26px 28px 28px; display: flex; flex-direction: column; }
+  .project.wide .body { padding: 38px 38px; justify-content: center; }
+  .kicker { font-family: var(--mono); font-size: 12.5px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+  .project h3 { margin: 10px 0 0; font-size: 24px; letter-spacing: -0.015em; font-weight: 600; }
+  .project.wide h3 { font-size: 30px; }
+  .project p { margin: 10px 0 0; color: var(--muted); font-size: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .chip { font-family: var(--mono); font-size: 12.5px; color: var(--muted); padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; }
+  .more { margin-top: auto; padding-top: 22px; display: flex; gap: 20px; font-size: 15px; font-weight: 500; }
+  .more a { color: var(--text); display: inline-flex; align-items: center; gap: 6px; }
+  .more a:hover { color: var(--accent); }
+  .more .note { color: var(--dim); font-weight: 400; font-size: 14px; }
+
+  /* A la par mock */
+  .mock { position: absolute; inset: 0; display: grid; place-items: center; background:
+      radial-gradient(500px 300px at 30% 20%, rgba(45,212,191,0.10), transparent 60%), var(--bg-2); }
+  .mock-card { width: 72%; max-width: 380px; background: #0d1319; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+  .mock-top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--muted); }
+  .avatars { display: flex; }
+  .avatars i { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #0d1319; display: block; }
+  .avatars i:first-child { background: #2dd4bf; }
+  .avatars i:last-child { background: #818cf8; margin-left: -7px; }
+  .mock-total { margin-top: 12px; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+  .mock-sub { font-size: 12.5px; color: var(--dim); }
+  .mock-bar { margin-top: 14px; height: 8px; border-radius: 99px; background: rgba(255,255,255,0.06); overflow: hidden; display: flex; }
+  .mock-bar b { display: block; height: 100%; }
+  .mock-rows { margin-top: 14px; display: grid; gap: 8px; }
+  .mock-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding-top: 8px; border-top: 1px solid var(--line); }
+  .mock-row span:last-child { color: var(--text); font-family: var(--mono); font-size: 12.5px; }
+
+  /* other projects */
+  .others-col { display: grid; grid-template-rows: 1fr 1fr; gap: 24px; }
+  .other { display: flex; flex-direction: column; justify-content: center; padding: 26px 28px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, var(--card), transparent); }
+  .other h3 { margin: 10px 0 0; font-size: 20px; font-weight: 600; }
+  .other p { margin: 8px 0 0; color: var(--muted); font-size: 16px; }
+
+  /* about */
+  .about { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; }
+  .about-text p { color: var(--muted); margin: 18px 0 0; }
+  .about-text p:first-of-type { margin-top: 22px; }
+  .stack { display: grid; gap: 0; }
+  .stack-row { display: grid; grid-template-columns: 170px 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .stack-row:last-child { border-bottom: 1px solid var(--line); }
+  .stack-row dt { font-family: var(--mono); font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; padding-top: 3px; }
+  .stack-row dd { margin: 0; color: var(--text); }
+
+  /* contact */
+  .contact .wrap { text-align: center; }
+  .contact h2 { font-size: clamp(34px, 5vw, 56px); }
+  .contact p { color: var(--muted); max-width: 520px; margin: 18px auto 0; }
+  .contact .actions { justify-content: center; }
+  .mail { font-family: var(--mono); font-size: clamp(16px, 2.2vw, 20px); color: var(--text); display: inline-block; margin-top: 30px; border-bottom: 1px solid var(--accent); padding-bottom: 2px; }
+  .mail:hover { color: var(--accent); }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0; color: var(--dim); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  footer a:hover { color: var(--text); }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  @media (max-width: 900px) {
+    .project.wide { grid-column: auto; flex-direction: column; }
+    .project.wide .shot { border-right: 0; border-bottom: 1px solid var(--line); aspect-ratio: 16 / 10; min-height: 0; flex: none; }
+    .project.wide .body { padding: 26px 28px 28px; }
+    .project.wide h3 { font-size: 24px; }
+    .projects { grid-template-columns: 1fr; }
+    .others-col { grid-template-rows: auto; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 16px; }
+    nav.links { gap: 18px; font-size: 14px; }
+    nav.links a.hide-sm { display: none; }
+    .hero .wrap { padding-top: 80px; padding-bottom: 80px; }
+    section { padding: 72px 0; }
+    .body, .project.wide .body, .other { padding: 22px 20px 24px; }
+    .stack-row { grid-template-columns: 1fr; gap: 6px; }
+    .mock-card { width: 84%; padding: 14px 16px; }
+    .mock-rows .mock-row:nth-child(3) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#inicio">lucas<span>.</span>vacca</a>
+    <nav class="links">
+      <a href="#proyectos">Proyectos</a>
+      <a href="#sobre-mi" class="hide-sm">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero" id="inicio">
+    <div class="wrap">
+      <div class="tag">// hola, soy</div>
+      <h1>Lucas Vacca</h1>
+      <p class="role">Desarrollador de software · Cofundador de <b>KOVELT</b></p>
+      <p class="intro">Me gusta programar y llevar ideas a proyectos que funcionen, desde aplicaciones web hasta dispositivos con ESP32. Acá vas a encontrar algunas de las cosas que construí.</p>
+      <div class="actions">
+        <a class="btn primary" href="#proyectos">Ver proyectos</a>
+        <a class="btn ghost" href="mailto:lucasvacca7@gmail.com">Escribime</a>
+        <a class="btn ghost" href="https://github.com/lucass291" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <section id="proyectos">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="tag">// proyectos</div>
+          <h2>Lo que vengo construyendo</h2>
+        </div>
+        <p>Productos propios y sitios que desarrollamos con KOVELT para negocios reales.</p>
+      </div>
+
+      <div class="projects">
+        <article class="project wide">
+          <a class="shot" href="https://kovelt.vercel.app/" target="_blank" rel="noopener" aria-label="Abrir sitio de KOVELT">
+            <img src="img/kovelt.jpg" alt="Página de inicio de KOVELT" loading="lazy">
+          </a>
+          <div class="body">
+            <div class="kicker">Estudio de software · Cofundador</div>
+            <h3>KOVELT</h3>
+            <p>El estudio que cofundé. Escuchamos cómo trabaja cada negocio y desarrollamos herramientas a medida: sitios web, aplicaciones, sistemas de gestión, integraciones y automatización de tareas.</p>
+            <div class="chips"><span class="chip">Desarrollo web</span><span class="chip">Software a medida</span><span class="chip">Automatización</span></div>
+            <div class="more"><a href="https://kovelt.vercel.app/" target="_blank" rel="noopener">Visitar sitio ↗</a></div>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="shot" aria-hidden="true">
+            <div class="mock">
+              <div class="mock-card">
+                <div class="mock-top"><span>Plan de noviembre</span><span class="avatars"><i></i><i></i></span></div>
+                <div class="mock-total">$ 842.300</div>
+                <div class="mock-sub">gastado de $ 1.100.000</div>
+                <div class="mock-bar"><b style="width:46%;background:#2dd4bf"></b><b style="width:30%;background:#818cf8"></b></div>
+                <div class="mock-rows">
+                  <div class="mock-row"><span>Supermercado</span><span>$ 64.200</span></div>
+                  <div class="mock-row"><span>Alquiler</span><span>$ 380.000</span></div>
+                  <div class="mock-row"><span>Saldo entre los dos</span><span>$ 12.450</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="kicker">Aplicación web · Proyecto propio</div>
+            <h3>A la par</h3>
+            <p>App de finanzas compartidas para organizar el plan del mes entre dos o más personas: carga de gastos, cuentas pendientes entre miembros, cierre de mes e invitaciones a un espacio privado.</p>
+            <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Supabase</span></div>
+            <div class="more"><span class="note">En desarrollo · repositorio privado</span></div>
+          </div>
+        </article>
+
+        <article class="project">
+          <a class="shot" href="https://l-nea-b-amoblamientos.vercel.app/index.html" target="_blank" rel="noopener" aria-label="Abrir sitio de Línea B Amoblamientos">
+            <img src="img/lineab.jpg" alt="Página de inicio de Línea B Amoblamientos" loading="lazy">
+          </a>
+          <div class="body">
+            <div class="kicker">Sitio web · con KOVELT</div>
+            <h3>Línea B Amoblamientos</h3>
+            <p>Sitio para un taller de muebles a medida de Bahía Blanca: presenta sus categorías, productos y servicios, y lleva las consultas directo a WhatsApp.</p>
+            <div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span></div>
+            <div class="more"><a href="https://l-nea-b-amoblamientos.vercel.app/index.html" target="_blank" rel="noopener">Visitar sitio ↗</a></div>
+          </div>
+        </article>
+
+        <article class="project">
+          <a class="shot" href="https://ceramica-z-a.vercel.app/" target="_blank" rel="noopener" aria-label="Abrir sitio de Cerámica Z&amp;A">
+            <img src="img/ceramica.jpg" alt="Página de inicio de Cerámica Z&amp;A" loading="lazy">
+          </a>
+          <div class="body">
+            <div class="kicker">Sitio web · con KOVELT</div>
+            <h3>Cerámica Z&amp;A</h3>
+            <p>Vidriera digital para un taller de cerámica: cursos, talleres, eventos y la colección de piezas, con contacto directo.</p>
+            <div class="chips"><span class="chip">Diseño web</span><span class="chip">Catálogo</span></div>
+            <div class="more"><a href="https://ceramica-z-a.vercel.app/" target="_blank" rel="noopener">Visitar sitio ↗</a></div>
+          </div>
+        </article>
+
+        <div class="others-col">
+            <div class="other">
+              <div class="kicker">Trabajo en equipo</div>
+              <h3>E-commerce</h3>
+              <p>Tienda online con registro e inicio de sesión, base de datos, gestión de productos y carrito de compras.</p>
+            </div>
+            <div class="other">
+              <div class="kicker">Electrónica</div>
+              <h3>Asistente de voz</h3>
+              <p>Asistente basado en ESP32 donde combino programación y electrónica.</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="sobre-mi">
+    <div class="wrap about-grid">
+      <div class="about-text">
+        <div class="tag">// sobre mí</div>
+        <h2>Software que resuelve cosas concretas</h2>
+        <p>Soy desarrollador y cofundador de KOVELT. Disfruto el proceso completo: entender el problema, pensar la solución y llevarla a algo que la gente pueda usar todos los días.</p>
+        <p>Además del desarrollo web me interesa la electrónica, así que también armo proyectos con Arduino y ESP32. Hoy me estoy enfocando en arquitectura de software, desarrollo web y sistemas embebidos.</p>
+      </div>
+      <dl class="stack">
+        <div class="stack-row"><dt>Lenguajes</dt><dd>JavaScript, TypeScript, HTML, CSS, Java, Python, SQL</dd></div>
+        <div class="stack-row"><dt>Frameworks</dt><dd>Next.js, React</dd></div>
+        <div class="stack-row"><dt>Datos</dt><dd>Supabase, JSON, manejo de datos en Excel</dd></div>
+        <div class="stack-row"><dt>Herramientas</dt><dd>Git, GitHub, Vercel</dd></div>
+        <div class="stack-row"><dt>Electrónica</dt><dd>Arduino, ESP32</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="contact" id="contacto">
+    <div class="wrap">
+      <div class="tag">// contacto</div>
+      <h2>¿Hablamos?</h2>
+      <p>Si tenés un proyecto, una propuesta o simplemente querés charlar sobre desarrollo, escribime.</p>
+      <a class="mail" href="mailto:lucasvacca7@gmail.com">lucasvacca7@gmail.com</a>
+      <div class="actions">
+        <a class="btn ghost" href="https://github.com/lucass291" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="btn ghost" href="https://kovelt.vercel.app/" target="_blank" rel="noopener">KOVELT ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Lucas Vacca</span>
+    <a href="#inicio">Volver arriba ↑</a>
+  </div>
+</footer>
+
+</body>
+</html>
